@@ -3,7 +3,7 @@
  * @since ২৫/৮/২২ ১২:০১ AM
  */
 
-package com.laziestcoder.jmbus;
+package com.github.laziestcoder.jmbus;
 
 public class JMeterBusService {
 

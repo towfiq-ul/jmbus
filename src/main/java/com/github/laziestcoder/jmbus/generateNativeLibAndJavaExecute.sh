@@ -4,10 +4,10 @@ echo "====================== Compiling Java File ======================"
 javac -h . JMeterBusService.java
 
 echo "====================== Compiling CPP File ======================"
-g++ --static -c -Wall -g -DONE=1 -fPIC -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux JMeterBusService.cpp -o com_laziestcoder_jmbus_JMeterBusService.o
+g++ --static -c -Wall -g -DONE=1 -fPIC -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux JMeterBusService.cpp -o com_github_laziestcoder_jmbus_JMeterBusService.o
 
 echo "====================== Compiling Library File ======================"
-g++ -shared -fPIC com_laziestcoder_jmbus_JMeterBusService.o -o ../../../../resources/libnative.so -lc -lm -L. -lmbus
+g++ -shared -fPIC com_github_laziestcoder_jmbus_JMeterBusService.o -o ../../../../../resources/libnative.so -lc -lm -L. -lmbus
 
 #echo "====================== Running Java File ======================"
 #java -cp . JMeterBusService
