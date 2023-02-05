@@ -4,3 +4,4 @@ resources/**
 #*.so
 *.jar
 *.class
+*.o

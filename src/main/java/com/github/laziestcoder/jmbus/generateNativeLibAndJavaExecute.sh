@@ -1,5 +1,5 @@
 echo "Remember to set your JAVA_HOME env var"
-
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 echo "====================== Compiling Java File ======================"
 javac -h . JMeterBusService.java
 

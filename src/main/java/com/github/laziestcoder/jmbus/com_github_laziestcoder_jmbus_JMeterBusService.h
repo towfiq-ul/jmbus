@@ -9,10 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     com_github_laziestcoder_jmbus_JMeterBusService
- * Method:    decodeHexValueFromCLibrary
+ * Method:    decodeHexValueString
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_github_laziestcoder_jmbus_JMeterBusService_decodeHexValueFromCLibrary
+JNIEXPORT jstring JNICALL Java_com_github_laziestcoder_jmbus_JMeterBusService_decodeHexValueString
   (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus

@@ -11,9 +11,10 @@ public class JMeterBusService {
         System.load(System.getProperty("user.dir") + "/src/main/resources/libnative.so");
     }
 
-    public static String decodeHexValue(String hexValue) {
-        return new JMeterBusService().decodeHexValueFromCLibrary(hexValue);
+    public static String decodeHexValueAsString(String hexValue) {
+        return new JMeterBusService().decodeHexValueString(hexValue);
     }
 
-    public native String decodeHexValueFromCLibrary(String hexValue);
+    public native String decodeHexValueString(String hexValue);
+
 }
