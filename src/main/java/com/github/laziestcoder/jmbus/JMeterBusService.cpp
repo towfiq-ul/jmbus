@@ -1,4 +1,4 @@
-#include "com_laziestcoder_jmbus_JMeterBusService.h"
+#include "com_github_laziestcoder_jmbus_JMeterBusService.h"
 
 #include <iostream>
 #include <err.h>
@@ -10,8 +10,8 @@ using namespace std;
 extern "C" {
 
 /*
- * Class:     com_laziestcoder_jmbus_JMeterBusService
- * Method:    decodeHexValueFromCLibrary
+ * Class:     com_github_laziestcoder_jmbus_JMeterBusService
+ * Method:    decodeHexValueAsString
  * Signature: ()Ljava/lang/String;
  */
 
@@ -27,7 +27,7 @@ string jstringToString(JNIEnv *env, jstring jStr);
 * Main Method
 */
 
-JNIEXPORT jstring JNICALL Java_com_laziestcoder_jmbus_JMeterBusService_decodeHexValueFromCLibrary
+JNIEXPORT jstring JNICALL Java_com_github_laziestcoder_jmbus_JMeterBusService_decodeHexValueAsString
 (JNIEnv *env, jobject thisObject, jstring hexDataForDecode) {
 	string convertedStr = jstringToString(env, hexDataForDecode);
 	string result = "";
