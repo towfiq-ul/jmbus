@@ -7,8 +7,18 @@ libmbus is an open source library for the M-bus (Meter-Bus) protocol.
 
 
 ## Installation
-1. run `cd /src/main/java`
-2. run `./generateNativeLibAndJavaExecute.sh`
-3. from `jmbus` directory run `mvn clean install`
-4. copy the generated `target/jmbuslib.jar` file to your project lib
-5. copy the generated `resources/libnative.so` file to your `src/main/resources` project directory
+*. from `jmbus` directory run `mvn clean install`
+*. copy the generated `target/j-m-bus.jar` file to your project resource
+i.e. `${main.dir}/src/main/resources/j-m-bus.jar`
+
+
+## MAVEN POM Dependency
+```
+<dependency>
+    <groupId>com.github.laziestcoder</groupId>
+    <artifactId>j-m-bus</artifactId>
+    <version><M.m.p></version>
+    <scope>system</scope>
+    <systemPath>${main.dir}/src/main/resources/j-m-bus.jar</systemPath>
+</dependency>
+```

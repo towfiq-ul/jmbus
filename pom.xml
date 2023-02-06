@@ -6,11 +6,11 @@
 
     <groupId>com.github.laziestcoder</groupId>
     <artifactId>j-m-bus</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>java-mbus</name>
-    <description>Java M-Bus library which is build from libmbus</description>
+    <description>Java M-Bus library which is build from libmbus C Library</description>
 
     <properties>
         <main.dir>${basedir}</main.dir>
@@ -21,8 +21,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pkg.installFolder>/usr/share/${pkg.name}</pkg.installFolder>
         <pkg.unixLogFolder>/var/log/${pkg.name}</pkg.unixLogFolder>
-        <pkg.name>libmbus-decoder-service</pkg.name>
-        <pkg.user>libmbus-decoder-service</pkg.user>
+        <pkg.name>jmbus</pkg.name>
+        <pkg.user>jmbus</pkg.user>
         <pkg.mainClass>com.github.laziestcoder.jmbus.JMBusApplication</pkg.mainClass>
         <spring.boot.version>2.7.3</spring.boot.version>
         <native-build-tools-plugin.version>0.9.17</native-build-tools-plugin.version>
@@ -44,10 +44,15 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.13.3</version>
         </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.13.0</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>${artifactId}-${version}</finalName>
+        <finalName>${artifactId}</finalName>
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>
@@ -74,31 +79,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M6</version>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <version>${spring.boot.version}</version>-->
-<!--                <configuration>-->
-<!--                    <mainClass>${pkg.mainClass}</mainClass>-->
-<!--                    <includeSystemScope>true</includeSystemScope>-->
-<!--                    <executable>true</executable>-->
-<!--                    <excludeDevtools>true</excludeDevtools>-->
-<!--                    <embeddedLaunchScriptProperties>-->
-<!--                        <confFolder>${pkg.installFolder}/conf</confFolder>-->
-<!--                        <logFolder>${pkg.unixLogFolder}</logFolder>-->
-<!--                        <logFilename>${pkg.name}.out</logFilename>-->
-<!--                        <initInfoProvides>${pkg.name}</initInfoProvides>-->
-<!--                    </embeddedLaunchScriptProperties>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                            <goal>build-info</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -160,62 +140,11 @@
                             </resources>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>copy-libnative-so</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/external</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${main.dir}/src/main/resources</directory>
-                                    <include>libnative.so</include>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${main.dir}/src/main/resources</directory>
-                                    <include>application.properties</include>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-resource</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${main.dir}/src/main/resources</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
