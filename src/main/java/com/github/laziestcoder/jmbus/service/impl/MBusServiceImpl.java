@@ -1,7 +1,6 @@
 package com.github.laziestcoder.jmbus.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.laziestcoder.jmbus.mbus.LibMbus;
@@ -12,17 +11,15 @@ import com.sun.jna.Native;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 public class MBusServiceImpl implements MBusService {
-    private static final Logger LOG = Logger.getLogger(MBusService.class.getName());
-    private static final String LIB_DIR = new ClassPathResource("libmbus").getPath();
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private static final XmlMapper xmlMapper = new XmlMapper();
-    private static final LibMbus libMbus = Native.load(LIB_DIR, LibMbus.class);
+    private final Logger LOG = Logger.getLogger(MBusService.class.getName());
+    private final String LIB_DIR = new ClassPathResource("libmbus").getPath();
+    private final XmlMapper xmlMapper = new XmlMapper();
+    private final LibMbus libMbus = Native.load(LIB_DIR, LibMbus.class);
 
     @Override
     public JsonNode decodeMessage(JsonNode dataNode, String propertyName) {
@@ -36,8 +33,6 @@ public class MBusServiceImpl implements MBusService {
     }
 
     private JsonNode getDecodedValue(String hexValue) {
-        LOG.log(Level.INFO, "Libmbus Found: [{}]", LIB_DIR);
-        System.out.println(MessageFormat.format("Libmbus Found: {0}", LIB_DIR));
         JsonNode jsonResult = null;
         try {
             byte[] buff = new byte[4096];
