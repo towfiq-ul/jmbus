@@ -6,7 +6,7 @@
 
     <groupId>com.github.laziestcoder</groupId>
     <artifactId>j-m-bus</artifactId>
-    <version>1.0.1</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>java-mbus</name>
