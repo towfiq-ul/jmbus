@@ -10,8 +10,10 @@ import com.github.laziestcoder.jmbus.service.MBusService;
 import com.sun.jna.Native;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
 
 @Service
 public class MBusServiceImpl implements MBusService {
@@ -22,7 +24,7 @@ public class MBusServiceImpl implements MBusService {
 
     public MBusServiceImpl() {
         try {
-            ClassPathResource LIB_RESOURCE = new ClassPathResource(SO_FILE_PATH_NAME, this.getClass().getClassLoader());
+            File LIB_RESOURCE = ResourceUtils.getFile(SO_FILE_PATH_NAME);
             String LIB_DIR = LIB_RESOURCE.getPath();
             LOG.info("Libmbus Path: {}", LIB_DIR);
             libMbus = Native.load(LIB_DIR, LibMbus.class);
