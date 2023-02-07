@@ -13,9 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.net.URL;
-
 @Service
 public class MBusServiceImpl implements MBusService {
     private static final Logger LOG = LoggerFactory.getLogger(MBusService.class.getName());
