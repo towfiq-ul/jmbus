@@ -45,7 +45,7 @@ public class MBusServiceImpl implements MBusService {
     private JsonNode getDecodedValue(String hexValue) {
         JsonNode jsonResult = null;
         try {
-            byte[] buff = new byte[5120];
+            byte[] buff = new byte[4096];
             byte[] raw_buff = hexValue.getBytes();
             long buffLength = libMbus.mbus_hex2bin(buff, buff.length, raw_buff, raw_buff.length);
             mbus_frame mBusFrame = new mbus_frame();

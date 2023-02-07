@@ -5,10 +5,7 @@ import com.github.laziestcoder.jmbus.service.MBusService;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Objects;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 public class MBusServiceTest {
