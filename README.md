@@ -18,7 +18,7 @@ i.e. `${main.dir}/src/main/resources/j-m-bus.jar`
     <groupId>com.github.laziestcoder</groupId>
     <artifactId>j-m-bus</artifactId>
     <version><M.m.p></version>
-    <scope>system</scope>
-    <systemPath>${main.dir}/src/main/resources/j-m-bus.jar</systemPath>
+  <!--  <scope>system</scope> -->
+  <!--  <systemPath>${main.dir}/src/main/resources/j-m-bus.jar</systemPath> -->
 </dependency>
 ```
