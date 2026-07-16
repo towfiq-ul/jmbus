@@ -57,3 +57,60 @@ dependencies {
     implementation 'io.github.towfiq-ul:jmbus:<M.m.p>'
 }
 ```
+
+## Usage
+
+The entry point is `MBusService` (`io.github.towfiqul.jmbus.service.MBusService`), implemented
+by `MBusServiceImpl`. In a Spring app, `MBusServiceImpl` is already annotated `@Service`, so you
+can just `@Autowired` it. Outside Spring, construct it directly — `new MBusServiceImpl()` —
+which loads `libmbus.so` once, at construction time.
+
+```java
+MBusService mBusService = new MBusServiceImpl();
+
+String hexTelegram = "68 4D 4D 68 08 ..."; // a raw M-Bus telegram, as hex
+JsonNode result = mBusService.decodeMessage(hexTelegram);
+
+System.out.println(result.toString());
+```
+
+That produces structured JSON describing the meter and its readings, for example:
+
+```json
+{
+  "SlaveInformation": {
+    "Id": "11120895",
+    "Manufacturer": "EDC",
+    "Medium": "Heat: Outlet",
+    "AccessNumber": "23"
+  },
+  "DataRecord": [
+    {
+      "id": "0",
+      "Function": "Instantaneous value",
+      "Unit": "Energy (kWh)",
+      "Value": "35"
+    }
+  ]
+}
+```
+
+There's a second overload for the common case where the hex telegram is one field inside a
+larger JSON payload you already have — e.g. a message coming off a queue that carries the raw
+telegram alongside metadata you don't want to lose:
+
+```java
+// dataNode = {"deviceId": "abc123", "telegram": "68 4D 4D 68 08 ..."}
+JsonNode updated = mBusService.decodeMessage(dataNode, "telegram");
+// updated = {"deviceId": "abc123", "telegram": { ...decoded JSON... }}
+```
+
+It decodes the hex value at the given field name and replaces it in place, leaving the rest of
+`dataNode` untouched.
+
+**Runtime requirement:** `libmbus.so` must exist as an actual file on the classpath (e.g.
+`src/main/resources/libmbus.so` in your own project — see Installation above), not just be
+packed inside a jar. It's loaded via Spring's `ResourceUtils.getFile(...)`, which needs a real
+filesystem path. If construction fails, check the log line `Libmbus Path: ...` that
+`MBusServiceImpl` prints on startup — an exception right after it usually means that path isn't
+resolving to a real file.

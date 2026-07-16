@@ -1,3 +1,8 @@
+/**
+ * @author Towfiqul Islam
+ * @since 2/5/23 4:29 PM
+ */
+
 package io.github.towfiqul.jmbus.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +20,16 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 
+/**
+ * Default {@link MBusService} implementation. Decodes a telegram by driving libmbus's native
+ * parse pipeline directly: {@link LibMbus#mbus_hex2bin} to get raw bytes, {@link
+ * LibMbus#mbus_parse} to get a frame, {@link LibMbus#mbus_frame_data_parse} to decode its
+ * records, then {@link LibMbus#mbus_frame_data_xml} to render XML, which is converted straight
+ * to JSON.
+ *
+ * <p>Annotated {@link Service @Service}, so a Spring application can {@code @Autowired} it
+ * directly; outside Spring, just construct it with {@code new MBusServiceImpl()}.
+ */
 @Service
 public class MBusServiceImpl implements MBusService {
     private static final Logger LOG = LoggerFactory.getLogger(MBusService.class.getName());
@@ -22,6 +37,13 @@ public class MBusServiceImpl implements MBusService {
     private final XmlMapper xmlMapper = new XmlMapper();
     private LibMbus libMbus = null;
 
+    /**
+     * Loads {@code libmbus.so} from the classpath (via {@link ResourceUtils#getFile}, which
+     * requires it to be an actual file, not packed inside a jar — see the README's "Runtime
+     * requirement" note) and binds it as {@link LibMbus}. Load failures are logged rather than
+     * thrown, leaving {@code libMbus} {@code null}; subsequent {@link #decodeMessage} calls will
+     * then fail with a {@link NullPointerException}.
+     */
     public MBusServiceImpl() {
         try {
             File LIB_RESOURCE = ResourceUtils.getFile(SO_FILE_PATH_NAME);
@@ -33,17 +55,31 @@ public class MBusServiceImpl implements MBusService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonNode decodeMessage(JsonNode dataNode, String propertyName) {
         ((ObjectNode) dataNode).put(propertyName, this.getDecodedValue(dataNode.get(propertyName).asText()));
         return dataNode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonNode decodeMessage(String hexValue) {
         return this.getDecodedValue(hexValue);
     }
 
+    /**
+     * Runs the hex-to-JSON decode pipeline described in the class Javadoc.
+     *
+     * @param hexValue the hex-encoded telegram to decode
+     * @return the decoded telegram as JSON
+     * @throws RuntimeException if any step of the native decode pipeline fails; the original
+     *                          exception is logged and its message re-thrown
+     */
     private JsonNode getDecodedValue(String hexValue) {
         JsonNode jsonResult = null;
         try {
@@ -64,4 +100,3 @@ public class MBusServiceImpl implements MBusService {
         return jsonResult;
     }
 }
-
