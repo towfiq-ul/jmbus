@@ -3,7 +3,7 @@
  * @since 2/5/23 4:29 PM
  */
 
-package com.github.laziestcoder.jmbus;
+package io.github.towfiqul.jmbus;
 
 public class JMBusApplication {
 }

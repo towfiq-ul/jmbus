@@ -1,12 +1,12 @@
-package com.github.laziestcoder.jmbus.service.impl;
+package io.github.towfiqul.jmbus.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.github.laziestcoder.jmbus.mbus.LibMbus;
-import com.github.laziestcoder.jmbus.mbus.mbus_frame;
-import com.github.laziestcoder.jmbus.mbus.mbus_frame_data;
-import com.github.laziestcoder.jmbus.service.MBusService;
+import io.github.towfiqul.jmbus.mbus.LibMbus;
+import io.github.towfiqul.jmbus.mbus.mbus_frame;
+import io.github.towfiqul.jmbus.mbus.mbus_frame_data;
+import io.github.towfiqul.jmbus.service.MBusService;
 import com.sun.jna.Native;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

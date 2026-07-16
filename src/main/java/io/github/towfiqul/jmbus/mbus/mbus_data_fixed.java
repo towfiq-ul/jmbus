@@ -1,4 +1,4 @@
-package com.github.laziestcoder.jmbus.mbus;
+package io.github.towfiqul.jmbus.mbus;
 
 
 import com.sun.jna.Structure;

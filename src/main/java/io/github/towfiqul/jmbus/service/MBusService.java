@@ -1,4 +1,4 @@
-package com.github.laziestcoder.jmbus.service;
+package io.github.towfiqul.jmbus.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

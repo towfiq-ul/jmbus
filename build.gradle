@@ -1,0 +1,92 @@
+plugins {
+    id 'java-library'
+    id 'com.vanniktech.maven.publish' version '0.37.0'
+}
+
+group = 'io.github.towfiq-ul'
+version = '2.0.1'
+description = 'Java M-Bus library which is build from libmbus C Library'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    springBootVersion = '2.7.3'
+}
+
+dependencies {
+    // Exposed via the public API (MBusService returns JsonNode; LibMbus and the
+    // mbus_* structures are public JNA types), so they're declared 'api'.
+    api "com.fasterxml.jackson.core:jackson-databind:2.13.3"
+    api "net.java.dev.jna:jna-platform:5.13.0"
+
+    // Used internally only.
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3"
+    implementation "commons-io:commons-io:2.11.0"
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.springframework.boot:spring-boot-test:${springBootVersion}"
+}
+
+tasks.named('compileJava') {
+    options.compilerArgs << '-Xlint:deprecation' << '-Xlint:removal' << '-Xlint:unchecked'
+}
+
+tasks.named('test') {
+    useJUnit()
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'io.github.towfiqul.jmbus.JMBusApplication'
+        )
+    }
+}
+
+// Publishing to Maven Central is opt-in: `signAllPublications()` only fails a build that
+// actually tries to sign (i.e. a publish task), so plain `./gradlew build`/`test` never
+// requires a local GPG key. See PUBLISHING.md for the one-time account/key setup this
+// plugin assumes (mavenCentralUsername/mavenCentralPassword + signing.* in
+// ~/.gradle/gradle.properties, or the ORG_GRADLE_PROJECT_* env var equivalents).
+mavenPublishing {
+    coordinates(group.toString(), 'jmbus', version.toString())
+    publishToMavenCentral()
+    signAllPublications()
+
+    pom {
+        name = 'jmbus'
+        description = project.description
+        inceptionYear = '2023'
+        url = 'https://github.com/towfiq-ul/jmbus'
+
+        licenses {
+            license {
+                name = 'BSD-3-Clause'
+                url = 'https://github.com/towfiq-ul/jmbus/blob/develop/LICENSE'
+                distribution = 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id = 'towfiq-ul'
+                name = 'Towfiqul Islam'
+                url = 'https://github.com/towfiq-ul'
+            }
+        }
+
+        scm {
+            url = 'https://github.com/towfiq-ul/jmbus'
+            connection = 'scm:git:git://github.com/towfiq-ul/jmbus.git'
+            developerConnection = 'scm:git:ssh://git@github.com/towfiq-ul/jmbus.git'
+        }
+    }
+}
