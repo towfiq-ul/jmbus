@@ -5,6 +5,22 @@ Here is the repository of the C Libmbus Library: https://github.com/rscada/libmb
 
 libmbus is an open source library for the M-bus (Meter-Bus) protocol.
 
+## Credits
+
+`jmbus` is a JNA wrapper around [libmbus](https://github.com/rscada/libmbus), and bundles a
+compiled copy of it (`src/main/resources/libmbus.so`) in every build/distribution. All credit
+for the M-Bus protocol implementation itself belongs to the libmbus project:
+
+* **Project / team:** [rSCADA](https://github.com/rscada) — https://github.com/rscada/libmbus
+* **Copyright:** © 2010-2012, Raditex Control AB
+* **License:** BSD 3-Clause (see libmbus's own
+  [LICENSE](https://github.com/rscada/libmbus/blob/master/LICENSE) and
+  [COPYING](https://github.com/rscada/libmbus/blob/master/COPYING) files)
+
+libmbus's `COPYING` file asks that "due credit ... be given to rSCADA and Raditex Control in
+derivative work based on the libmbus library" — this section is that credit, and satisfies the
+BSD-3-Clause requirement to reproduce libmbus's copyright notice alongside binary
+redistributions of it.
 
 ## Installation
 

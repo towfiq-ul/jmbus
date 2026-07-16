@@ -1,9 +1,16 @@
 package io.github.towfiqul.jmbus.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.jna.Native;
+import io.github.towfiqul.jmbus.mbus.LibMbus;
+import io.github.towfiqul.jmbus.mbus.mbus_frame;
+import io.github.towfiqul.jmbus.mbus.mbus_frame_data;
 import io.github.towfiqul.jmbus.service.MBusService;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +24,26 @@ public class MBusServiceTest {
     public void decodeMessage() {
         JsonNode result = mBusService.decodeMessage(hexValue);
         assertEquals(decodedHex, result.toString());
+    }
+
+    @Test
+    public void mbusDataVariableRecordCountMatchesLibmbus() throws Exception {
+        File libResource = ResourceUtils.getFile("libmbus.so");
+        LibMbus libMbus = Native.load(libResource.getPath(), LibMbus.class);
+
+        byte[] buff = new byte[4096];
+        byte[] rawBuff = hexValue.getBytes();
+        long buffLength = libMbus.mbus_hex2bin(buff, buff.length, rawBuff, rawBuff.length);
+        mbus_frame frame = new mbus_frame();
+        libMbus.mbus_parse(frame, buff, buffLength);
+        mbus_frame_data frameData = new mbus_frame_data();
+        libMbus.mbus_frame_data_parse(frame, frameData);
+
+        // decodedHex above has 22 DataRecord entries (ids 0-21). mbus_data_variable.record is
+        // "mbus_data_record *" in C; when it was mapped as an embedded Structure instead of a
+        // Pointer, every field after it - including nrecords - was read from the wrong native
+        // offset, so this assertion is really checking the struct layout, not just the count.
+        assertEquals(22, frameData.data_var.nrecords);
     }
 
 }
